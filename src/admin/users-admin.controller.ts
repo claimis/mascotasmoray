@@ -6,9 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AdminJwtGuard } from '../auth/admin-jwt.guard';
 import { UsersAdminService } from './users-admin.service';
 
+@UseGuards(AdminJwtGuard)
 @Controller('admin/users')
 export class UsersAdminController {
   constructor(private readonly service: UsersAdminService) {}

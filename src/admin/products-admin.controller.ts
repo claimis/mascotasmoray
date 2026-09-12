@@ -6,9 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AdminJwtGuard } from '../auth/admin-jwt.guard';
 import { ProductsAdminService } from './products-admin.service';
 
+@UseGuards(AdminJwtGuard)
 @Controller('admin/products')
 export class ProductsAdminController {
   constructor(private readonly service: ProductsAdminService) {}
@@ -16,6 +19,11 @@ export class ProductsAdminController {
   @Get()
   findAll() {
     return this.service.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.service.findOne(+id);
   }
 
   @Post()

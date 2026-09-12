@@ -5,6 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { AdminModule } from './admin/admin.module';
+import { PromotionsModule } from './promotions/promotions.module';
+import { AuthModule } from './auth/auth.module';
+import { OrdersModule } from './orders/orders.module';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
   imports: [
@@ -24,6 +28,10 @@ import { AdminModule } from './admin/admin.module';
     }),
     ProductsModule,
     AdminModule,
+    PromotionsModule,
+    AuthModule,
+    OrdersModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

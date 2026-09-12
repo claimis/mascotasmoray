@@ -17,6 +17,12 @@ export class User {
   @Column({ name: 'contact_telf', nullable: true })
   contactTelf: string;
 
+  @Column({ nullable: true })
+  address: string;
+
   @Column()
   password: string;
+
+  @Column({ default: 'customer' })
+  role: string;
 }

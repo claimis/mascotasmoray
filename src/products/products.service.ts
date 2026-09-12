@@ -2,17 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productsRepository: Repository<Product>,
+    @InjectRepository(Category)
+    private readonly categoriesRepository: Repository<Category>,
   ) {}
 
   async findAll() {
     const products = await this.productsRepository.find({
-      relations: { productDetail: true, supplier: true },
+      relations: { productDetail: true, supplier: true, category: true },
       order: { id: 'ASC' },
     });
 
@@ -26,6 +29,15 @@ export class ProductsService {
         ? `data:image/png;base64,${product.productDetail.image}`
         : null,
       supplier: product.supplier?.name ?? null,
+      stock: product.stock,
+      featured: product.featured,
+      animalType: product.animalType,
+      category: product.category?.nameCategory ?? null,
+      categoryId: product.category?.id ?? null,
     }));
+  }
+
+  findCategories() {
+    return this.categoriesRepository.find({ order: { nameCategory: 'ASC' } });
   }
 }
