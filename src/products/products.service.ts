@@ -13,13 +13,8 @@ export class ProductsService {
     private readonly categoriesRepository: Repository<Category>,
   ) {}
 
-  async findAll() {
-    const products = await this.productsRepository.find({
-      relations: { productDetail: true, supplier: true, category: true },
-      order: { id: 'ASC' },
-    });
-
-    return products.map((product) => ({
+  private toDto(product: Product) {
+    return {
       id: product.id,
       name: product.name,
       price: Number(product.price),
@@ -34,7 +29,24 @@ export class ProductsService {
       animalType: product.animalType,
       category: product.category?.nameCategory ?? null,
       categoryId: product.category?.id ?? null,
-    }));
+    };
+  }
+
+  async findAll() {
+    const products = await this.productsRepository.find({
+      relations: { productDetail: true, supplier: true, category: true },
+      order: { id: 'ASC' },
+    });
+
+    return products.map((product) => this.toDto(product));
+  }
+
+  async findOne(id: number) {
+    const product = await this.productsRepository.findOne({
+      where: { id },
+      relations: { productDetail: true, supplier: true, category: true },
+    });
+    return product ? this.toDto(product) : null;
   }
 
   findCategories() {
