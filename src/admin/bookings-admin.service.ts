@@ -2,7 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Booking } from '../bookings/entities/booking.entity';
-import { Product } from '../products/entities/product.entity';
+import { Order } from '../orders/entities/order.entity';
+
+interface BookingInput {
+  name?: string;
+  dateInit?: string;
+  orderId?: number;
+}
+
+const ORDER_SELECT = {
+  id: true,
+  customerName: true,
+  customerEmail: true,
+  customerPhone: true,
+  total: true,
+  deliveryMethod: true,
+  status: true,
+};
 
 @Injectable()
 export class BookingsAdminService {
@@ -13,39 +29,36 @@ export class BookingsAdminService {
 
   findAll() {
     return this.bookingsRepository.find({
-      relations: { product: true },
+      relations: { order: true },
       select: {
         id: true,
         name: true,
         dateInit: true,
-        product: { id: true, name: true },
+        order: ORDER_SELECT,
       },
       order: { id: 'ASC' },
     });
   }
 
-  create(data: { name?: string; dateInit?: string; productId?: number }) {
+  create(data: BookingInput) {
     const booking = this.bookingsRepository.create({
       name: data.name,
       dateInit: data.dateInit ? new Date(data.dateInit) : null,
-      product: data.productId ? ({ id: data.productId } as Product) : null,
+      order: data.orderId ? ({ id: data.orderId } as Order) : null,
     });
     return this.bookingsRepository.save(booking);
   }
 
-  async update(
-    id: number,
-    data: { name?: string; dateInit?: string; productId?: number },
-  ) {
+  async update(id: number, data: BookingInput) {
     await this.bookingsRepository.save({
       id,
       name: data.name,
       dateInit: data.dateInit ? new Date(data.dateInit) : null,
-      product: data.productId ? ({ id: data.productId } as Product) : null,
+      order: data.orderId ? ({ id: data.orderId } as Order) : null,
     });
     return this.bookingsRepository.findOne({
       where: { id },
-      relations: { product: true },
+      relations: { order: true },
     });
   }
 

@@ -31,6 +31,15 @@ export class Order {
   @Column({ nullable: true })
   address: string;
 
+  @Column({ name: 'delivery_method', default: 'shipping' })
+  deliveryMethod: string;
+
+  @Column({ name: 'shipping_cost', type: 'numeric', precision: 10, scale: 2, default: 0 })
+  shippingCost: number;
+
+  @Column({ name: 'pickup_date', type: 'date', nullable: true })
+  pickupDate: string | null;
+
   @Column({ default: 'pendiente' })
   status: string;
 

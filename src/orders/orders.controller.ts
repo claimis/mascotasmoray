@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { OrdersService } from './orders.service';
@@ -30,6 +30,8 @@ export class OrdersController {
       customerEmail: string;
       customerPhone?: string;
       address?: string;
+      deliveryMethod?: 'pickup' | 'shipping';
+      pickupDate?: string;
       items: { productId: number; quantity: number }[];
     },
   ) {
@@ -37,15 +39,26 @@ export class OrdersController {
     return this.ordersService.checkout({ ...body, userId });
   }
 
-  @Post(':id/pay')
-  pay(@Param('id') id: string) {
-    return this.ordersService.pay(+id);
-  }
-
   @UseGuards(JwtAuthGuard)
   @Get('mine')
   findMine(@Req() req: any) {
     return this.ordersService.findByUser(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('mine/products')
+  findMyPurchasedProducts(@Req() req: any) {
+    return this.ordersService.findPurchasedProductIds(req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/reschedule')
+  reschedule(
+    @Req() req: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { pickupDate: string },
+  ) {
+    return this.ordersService.reschedule(id, req.user.id, body.pickupDate);
   }
 
   @Get(':id')

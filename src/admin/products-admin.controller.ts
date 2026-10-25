@@ -21,6 +21,11 @@ export class ProductsAdminController {
     return this.service.findAll();
   }
 
+  @Get('suppliers')
+  findSuppliers() {
+    return this.service.findSuppliers();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.service.findOne(+id);

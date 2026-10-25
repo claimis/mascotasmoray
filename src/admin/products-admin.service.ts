@@ -32,7 +32,16 @@ export class ProductsAdminService {
     private readonly productsRepository: Repository<Product>,
     @InjectRepository(ProductDetail)
     private readonly productDetailRepository: Repository<ProductDetail>,
+    @InjectRepository(Supplier)
+    private readonly suppliersRepository: Repository<Supplier>,
   ) {}
+
+  findSuppliers() {
+    return this.suppliersRepository.find({
+      select: { id: true, name: true },
+      order: { name: 'ASC' },
+    });
+  }
 
   findAll() {
     return this.productsRepository.find({

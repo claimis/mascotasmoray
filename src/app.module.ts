@@ -9,6 +9,7 @@ import { PromotionsModule } from './promotions/promotions.module';
 import { AuthModule } from './auth/auth.module';
 import { OrdersModule } from './orders/orders.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { FavoritesModule } from './favorites/favorites.module';
     AuthModule,
     OrdersModule,
     FavoritesModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

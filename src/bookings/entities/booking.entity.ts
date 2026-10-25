@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Product } from '../../products/entities/product.entity';
+import { Order } from '../../orders/entities/order.entity';
 
 @Entity('booking')
 export class Booking {
@@ -21,4 +22,8 @@ export class Booking {
   @ManyToOne(() => Product, { nullable: true })
   @JoinColumn({ name: 'products_id' })
   product: Product;
+
+  @ManyToOne(() => Order, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'order_id' })
+  order: Order | null;
 }

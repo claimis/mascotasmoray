@@ -9,12 +9,14 @@ import { Product } from '../products/entities/product.entity';
 import { OrdersController } from './orders.controller';
 import { OrdersAdminController } from './orders-admin.controller';
 import { OrdersService } from './orders.service';
+import { ScheduleModule } from '../schedule/schedule.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Order, OrderItem, Product]),
     PassportModule,
     ConfigModule,
+    ScheduleModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -40,6 +40,19 @@ export class AuthService {
     return this.buildSession(user);
   }
 
+  async me(userId: number) {
+    const user = await this.usersRepository.findOneBy({ id: userId });
+    if (!user) throw new UnauthorizedException('Sesión no válida');
+    return {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.contactMail,
+      phone: user.contactTelf,
+      address: user.address,
+    };
+  }
+
   async register(data: {
     name: string;
     surname?: string;
