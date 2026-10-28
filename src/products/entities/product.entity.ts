@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -31,6 +32,11 @@ export class Product {
 
   @Column({ name: 'animal_type', nullable: true })
   animalType: string;
+
+  // Código de barras (EAN) del TPV. Solo se ve y se edita desde admin; no se repite en la ficha pública.
+  @Index('idx_products_barcode')
+  @Column({ type: 'varchar', length: 40, nullable: true })
+  barcode: string | null;
 
   @ManyToOne(() => Supplier, { nullable: true })
   @JoinColumn({ name: 'supplier_id' })

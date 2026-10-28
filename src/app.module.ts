@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { OrdersModule } from './orders/orders.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ScheduleModule } from './schedule/schedule.module';
     OrdersModule,
     FavoritesModule,
     ScheduleModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
